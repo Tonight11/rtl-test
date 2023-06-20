@@ -10,8 +10,26 @@
 		quantity: 1,
 		color: '',
 	});
+	const err = ref(false);
 
 	const addNewItem = () => {
+		err.value = true;
+		if (newItem.value.name === '') {
+			err.value = true;
+			return;
+		}
+		if (newItem.value.desc === '') {
+			err.value = true;
+			return;
+		}
+		if (newItem.value.quantity === 0) {
+			err.value = true;
+			return;
+		}
+		if (newItem.value.color === '') {
+			err.value = true;
+			return;
+		}
 		addItem(newItem.value);
 
 		newItem.value.id = Math.random() * 10;
@@ -26,6 +44,7 @@
 
 <template>
 	<form @submit.prevent="addNewItem" class="add__item">
+		<small v-if="err" style="color: red">Заполните все поля</small>
 		<input
 			v-model="newItem.name"
 			placeholder="name"

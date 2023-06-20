@@ -19,6 +19,9 @@
 			@cancel-delete="cancelDelete"
 			@delete-item="deleteItem"
 		>
+			<small v-if="err" style="color: red"
+				>Нельзя удалить больше чем кол-во</small
+			>
 			<input
 				class="confirm__quant"
 				placeholder="Введите количество"
@@ -45,6 +48,7 @@
 
 	const showConfirmationDialog = ref(false);
 	const deleteQuantity = ref(1);
+	const err = ref(false);
 
 	const confirmDelete = () => {
 		showConfirmationDialog.value = true;
@@ -57,6 +61,7 @@
 
 	const deleteItem = () => {
 		if (deleteQuantity.value > props.item.quantity) {
+			err.value = true;
 			return;
 		}
 		const confirmedQuantity = deleteQuantity.value;

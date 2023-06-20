@@ -17,15 +17,31 @@
 					<Profile @open-add="addModal = true" />
 					<Inventory />
 				</div>
-				<Modal v-if="addModal" @closeModal="addModal = false" class="add-item">
-					<AddItem @close-add="addModal = false" />
-				</Modal>
+				<Transition name="addModal">
+					<Modal
+						v-if="addModal"
+						@closeModal="addModal = false"
+						class="add-item"
+					>
+						<AddItem @close-add="addModal = false" />
+					</Modal>
+				</Transition>
 			</div>
 		</div>
 	</main>
 </template>
 
 <style lang="scss">
+	.addModal-enter-active,
+	.addModal-leave-active {
+		transition: all 0.5s ease;
+	}
+
+	.addModal-enter-from,
+	.addModal-leave-to {
+		transform: translateY(100px);
+		opacity: 0;
+	}
 	.menu {
 		display: flex;
 		justify-content: center;

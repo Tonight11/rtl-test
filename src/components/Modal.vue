@@ -12,7 +12,8 @@
 <style lang="scss" scoped>
 	.modal {
 		background: rgba(38, 38, 38, 0.5);
-		min-width: 250px;
+		max-width: 250px;
+		z-index: 100;
 		/* Primary Border */
 		backdrop-filter: blur(8px);
 		position: absolute;
@@ -34,5 +35,6 @@
 		top: auto;
 		bottom: auto;
 		right: auto;
+		max-width: 100%;
 	}
 </style>

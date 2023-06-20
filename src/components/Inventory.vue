@@ -3,7 +3,7 @@
 		<VueDraggableNext class="inventory-grid" :list="mylist">
 			<ItemInventory
 				v-for="element in mylist"
-				:key="element?.id"
+				:key="element.item?.id"
 				class="list-inventory-item"
 				:class="{ 'not-draggable': !enabled }"
 				:item="element"

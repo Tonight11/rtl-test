@@ -1,38 +1,43 @@
 <script setup lang="ts">
 	import { useInventoryrStore } from '@/stores/inventory';
 	const { addItem } = useInventoryrStore();
-	import { ref } from 'vue';
+	import { ref, type Ref } from 'vue';
 	const emit = defineEmits(['closeAdd']);
 	const newItem = ref({
-		id: Math.random() * 10,
+		id: Symbol('123'),
 		name: '',
 		desc: '',
 		quantity: 1,
 		color: '',
 	});
-	const err = ref(false);
+	const err = ref(false) as Ref<boolean> | Ref<string>;
 
 	const addNewItem = () => {
-		err.value = true;
+		err.value = false;
 		if (newItem.value.name === '') {
-			err.value = true;
+			err.value = 'Заполните все поля';
 			return;
 		}
 		if (newItem.value.desc === '') {
-			err.value = true;
+			err.value = 'Заполните все поля';
 			return;
 		}
 		if (newItem.value.quantity === 0) {
-			err.value = true;
+			err.value = 'Заполните все поля';
 			return;
 		}
 		if (newItem.value.color === '') {
-			err.value = true;
+			err.value = 'Заполните все поля';
 			return;
 		}
-		addItem(newItem.value);
+		try {
+			addItem(newItem.value);
+		} catch (error) {
+			err.value = error as string;
+			return;
+		}
 
-		newItem.value.id = Math.random() * 10;
+		newItem.value.id = Symbol('123');
 		newItem.value.name = '';
 		newItem.value.desc = '';
 		newItem.value.color = '';
@@ -44,7 +49,7 @@
 
 <template>
 	<form @submit.prevent="addNewItem" class="add__item">
-		<small v-if="err" style="color: red">Заполните все поля</small>
+		<small v-if="err" style="color: red">{{ err }}</small>
 		<input
 			v-model="newItem.name"
 			placeholder="name"

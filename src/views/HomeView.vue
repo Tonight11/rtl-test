@@ -18,7 +18,7 @@
 					<Inventory />
 				</div>
 				<Modal v-if="addModal" @closeModal="addModal = false" class="add-item">
-					<AddItem />
+					<AddItem @close-add="addModal = false" />
 				</Modal>
 			</div>
 		</div>

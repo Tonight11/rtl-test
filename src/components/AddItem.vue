@@ -2,6 +2,7 @@
 	import { useInventoryrStore } from '@/stores/inventory';
 	const { addItem } = useInventoryrStore();
 	import { ref } from 'vue';
+	const emit = defineEmits(['closeAdd']);
 	const newItem = ref({
 		id: Math.random() * 10,
 		name: '',
@@ -18,6 +19,8 @@
 		newItem.value.desc = '';
 		newItem.value.color = '';
 		newItem.value.quantity = 0;
+
+		emit('closeAdd');
 	};
 </script>
 

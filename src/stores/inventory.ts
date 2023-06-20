@@ -1,9 +1,9 @@
-import { ref, computed, type Ref } from 'vue';
+import { ref, computed, type Ref, watchEffect } from 'vue';
 import { defineStore } from 'pinia';
 import { useLocalStorage } from '@vueuse/core';
 
 interface Item {
-	id: number;
+	id: symbol;
 	name: string;
 	desc: string;
 	quantity: number;
@@ -31,14 +31,21 @@ export const useInventoryrStore = defineStore('inventory', () => {
 	const deleteItem = (quantity: number) => {
 		if (selectedItem.value) {
 			selectedItem.value.quantity -= quantity;
+
 			if (selectedItem.value.quantity === 0) {
-				mylist.value = mylist.value.filter(
-					item => item.item?.id !== selectedItem.value?.id
+				const slotIndex = mylist.value.findIndex(
+					item => item.item?.id === selectedItem.value.id
 				);
+
+				if (slotIndex !== -1) {
+					const updatedSlot = { ...mylist.value[slotIndex], item: null };
+					mylist.value.splice(slotIndex, 1, updatedSlot);
+				}
 			}
 		}
 		selectedItem.value = null;
 	};
+
 	const addItem = (item: Item) => {
 		const freeSlot = getFreeSlot.value;
 		if (freeSlot) {
@@ -49,6 +56,8 @@ export const useInventoryrStore = defineStore('inventory', () => {
 				quantity: item.quantity,
 				color: item.color,
 			};
+		} else {
+			throw new Error('Освободите инвентарь');
 		}
 	};
 

@@ -13,6 +13,7 @@
 	.modal {
 		background: rgba(38, 38, 38, 0.5);
 		max-width: 250px;
+		min-width: 250px;
 		z-index: 100;
 		/* Primary Border */
 		backdrop-filter: blur(8px);

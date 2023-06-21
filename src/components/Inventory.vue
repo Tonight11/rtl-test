@@ -11,7 +11,7 @@
 			/>
 		</VueDraggableNext>
 		<Transition name="modal">
-			<Modal v-if="selectedItem" @closeModal="closeItemDetails">
+			<Modal v-if="selectedItem" @closeModal="closeItemDetails" ref="target">
 				<ItemDetail :item="selectedItem" @delete="deleteItem" />
 			</Modal>
 		</Transition>
@@ -19,15 +19,18 @@
 </template>
 
 <script setup lang="ts">
+	import { onClickOutside } from '@vueuse/core';
 	import ItemInventory from './Item.vue';
 	import ItemDetail from './ItemDetail.vue';
 	import { VueDraggableNext } from 'vue-draggable-next';
 	import Modal from './Modal.vue';
 	import { useInventoryrStore } from '@/stores/inventory';
 	import { storeToRefs } from 'pinia';
+	import { ref, watch } from 'vue';
 
 	const { deleteItem } = useInventoryrStore();
 	const { mylist, enabled, selectedItem } = storeToRefs(useInventoryrStore());
+	const target = ref(null);
 
 	const showItemDetails = (item: any) => {
 		selectedItem.value = item.item;
@@ -35,6 +38,13 @@
 	const closeItemDetails = () => {
 		selectedItem.value = null;
 	};
+
+	onClickOutside(target, () => {
+		selectedItem.value = null;
+	});
+	watch(mylist, (newValue, oldValue) => {
+		selectedItem.value = null;
+	});
 </script>
 
 <style scoped>

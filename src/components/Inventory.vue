@@ -1,11 +1,11 @@
 <template>
 	<div class="inventory">
-		<VueDraggableNext class="inventory-grid" :list="mylist">
+		<VueDraggableNext class="inventory-grid" :list="mylist" handle=".handle">
 			<ItemInventory
 				v-for="element in mylist"
 				:key="element.item?.id"
 				class="list-inventory-item"
-				:class="{ 'not-draggable': !enabled }"
+				:class="{ handle: element.item !== null }"
 				:item="element"
 				@show-details="showItemDetails"
 			/>
@@ -26,7 +26,7 @@
 	import Modal from './Modal.vue';
 	import { useInventoryrStore } from '@/stores/inventory';
 	import { storeToRefs } from 'pinia';
-	import { ref, watch } from 'vue';
+	import { ref, watch, computed } from 'vue';
 
 	const { deleteItem } = useInventoryrStore();
 	const { mylist, enabled, selectedItem } = storeToRefs(useInventoryrStore());
@@ -42,7 +42,7 @@
 	onClickOutside(target, () => {
 		selectedItem.value = null;
 	});
-	watch(mylist, (newValue, oldValue) => {
+	watch(mylist, () => {
 		selectedItem.value = null;
 	});
 </script>
@@ -91,7 +91,7 @@
 		height: 100px;
 	}
 
-	.item {
+	.item.handle {
 		cursor: move;
 	}
 </style>

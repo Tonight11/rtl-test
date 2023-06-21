@@ -1,14 +1,7 @@
 import { ref, computed, type Ref, watchEffect } from 'vue';
 import { defineStore } from 'pinia';
 import { useLocalStorage } from '@vueuse/core';
-
-interface Item {
-	id: symbol;
-	name: string;
-	desc: string;
-	quantity: number;
-	color: string;
-}
+import { type Item } from '@/types/inventory';
 
 export const useInventoryrStore = defineStore('inventory', () => {
 	const mylist = useLocalStorage('inventory', createEmptySlots(5, 5));

@@ -26,13 +26,14 @@
 	import Modal from './Modal.vue';
 	import { useInventoryrStore } from '@/stores/inventory';
 	import { storeToRefs } from 'pinia';
-	import { ref, watch, computed } from 'vue';
+	import { ref, watch } from 'vue';
+	import { type Item } from '@/types/inventory';
 
 	const { deleteItem } = useInventoryrStore();
-	const { mylist, enabled, selectedItem } = storeToRefs(useInventoryrStore());
+	const { mylist, selectedItem } = storeToRefs(useInventoryrStore());
 	const target = ref(null);
 
-	const showItemDetails = (item: any) => {
+	const showItemDetails = (item: {item: Item}) => {
 		selectedItem.value = item.item;
 	};
 	const closeItemDetails = () => {
@@ -76,11 +77,10 @@
 
 	.list-inventory-item {
 		padding: 35px;
-		min-height: 100px;
+		min-height: 120px;
 		min-width: 110px;
 		border: 1px solid #4d4d4d;
 	}
-
 	.inventory-row {
 		display: flex;
 	}
